@@ -1,9 +1,20 @@
-# Ledger Blue
+# Ledger Blue Developer Edition
 
-The Ledger Blue is a personal lightweight mobile device architectured around a ST31 secure element, featuring a touch screen and USB/NFC/BLE connectivity. By enforcing a "what you see is what you sign" policy through a trusted interface the Blue strongly mitigates phishing and malware attacks.
+The Ledger Blue is a personal lightweight mobile device architectured around a ST31 secure element, featuring a touch screen and USB/NFC/BLE connectivity.
+It is based on [BOLOS](https://medium.com/@Ledger/introducing-bolos-blockchain-open-ledger-operating-system-b9893d09f333) (Blockchain Open Ledger Operating System), where apps can run securely in full isolation and leverage the main secrets (BIP39 seed) through allocated derivations.
 
-The Blue is available now as a [developer edition in pre-order](https://www.ledgerwallet.com/products/9-ledger-blue), with a scheduled delivery end of January 2016.
+The Blue is available now as an [developer edition](https://www.ledgerwallet.com/products/9-ledger-blue), for enthousiasts and early adopters.
 
-This repo will be updated in the coming weeks with documentation and code examples for both native and client applications.
+# Starting guide
 
-If you have questions, ideas or feature requests, please use the [/r/ledgerwallet](https://www.reddit.com/r/ledgerwallet) Reddit forum.
+The Ledger Blue Developer Edition is shipped without any application and without the onboarding process (to initialize the PIN and create/restore the master seed). The factory PIN is 1234.
+
+In the coming days we are going to publish a tutorial on how you can compile and upload your first apps, as well as procedure to update BOLOS firmware to the latest version (which will include the onboarding process).
+
+Developer documentation (SDK, tutorials, examples) will be added in the coming weeks.
+
+# Content of this repository
+
+* [Schematics & Assembly Ledger Blue Developer Edition](https://github.com/LedgerHQ/ledger-blue/tree/master/schematics-dev)
+* [Casing Ledger Blue Developer Edition](https://github.com/LedgerHQ/ledger-blue/tree/master/casing-dev)
+* [Ledger Blue development environment](https://github.com/LedgerHQ/ledger-blue/tree/master/env-dev)
