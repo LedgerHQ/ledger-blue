@@ -20,10 +20,11 @@ FROM        ubuntu:trusty
 MAINTAINER  Ledger Firmware Team <hello@ledger.fr>
 
 ENV PATH /opt/ledger-blue/clang-arm-fropi/bin:/opt/ledger-blue/gcc-arm-none-eabi-4_7-2013q2/bin:$PATH
+ENV BOLOS_ENV /opt/ledger-blue
 
 CMD bash
 
-RUN apt-get update && apt-get -y install cmake git build-essential vim python wget libc6-i386
+RUN apt-get update && apt-get -y install cmake git build-essential vim python wget libc6-i386 libc6-dev-i386
 
 RUN mkdir /opt/ledger-blue
 
