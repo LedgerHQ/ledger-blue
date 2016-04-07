@@ -15,6 +15,12 @@ Developer documentation (SDK, tutorials, examples) will be added in the coming w
 
 # Content of this repository
 
+## Software
+* [Ledger Blue development environment](https://github.com/LedgerHQ/ledger-blue/tree/master/env-dev)
+* [Python tools for the Ledger Blue](https://github.com/LedgerHQ/ledger-blue/tree/master/loader-python)
+* [Ledger Blue Secure SDK](https://github.com/LedgerHQ/ledger-blue/tree/master/secure-sdk-dev)
+* [Sample applications for Ledger Blue](https://github.com/LedgerHQ/ledger-blue/tree/master/sample-apps)
+
+## Hardware
 * [Schematics & Assembly Ledger Blue Developer Edition](https://github.com/LedgerHQ/ledger-blue/tree/master/schematics-dev)
 * [Casing Ledger Blue Developer Edition](https://github.com/LedgerHQ/ledger-blue/tree/master/casing-dev)
-* [Ledger Blue development environment](https://github.com/LedgerHQ/ledger-blue/tree/master/env-dev)
