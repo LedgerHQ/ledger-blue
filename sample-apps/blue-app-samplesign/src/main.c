@@ -23,19 +23,17 @@
 unsigned char G_io_seproxyhal_spi_buffer[IO_SEPROXYHAL_BUFFER_SIZE_B];
 
 unsigned char usb_enable_request; // request to turn on USB
-unsigned int current_text_pos; // parsing cursor in the text to display
-unsigned int text_y; // current location of the displayed text
-unsigned char uiDone; // notification to come back to the APDU event loop
+unsigned int current_text_pos;    // parsing cursor in the text to display
+unsigned int text_y;              // current location of the displayed text
+unsigned char uiDone;      // notification to come back to the APDU event loop
 unsigned char hashTainted; // notification to restart the hash
-unsigned int currentUiElement; // currently displayed UI element in a set of elements
-unsigned char element_displayed; // notification of something displayed in a touch handler
+unsigned int
+    currentUiElement; // currently displayed UI element in a set of elements
+unsigned char
+    element_displayed; // notification of something displayed in a touch handler
 
 // UI currently displayed
-enum UI_STATE {
-    UI_IDLE,
-    UI_TEXT,
-    UI_APPROVAL
-};
+enum UI_STATE { UI_IDLE, UI_TEXT, UI_APPROVAL };
 
 enum UI_STATE uiState;
 
@@ -43,7 +41,7 @@ unsigned int io_seproxyhal_touch_exit(bagl_element_t *e);
 unsigned int io_seproxyhal_touch_approve(bagl_element_t *e);
 unsigned int io_seproxyhal_touch_deny(bagl_element_t *e);
 
-#define MAX_CHARS_PER_LINE 49 
+#define MAX_CHARS_PER_LINE 49
 #define DEFAULT_FONT BAGL_FONT_OPEN_SANS_LIGHT_13px | BAGL_FONT_ALIGNMENT_LEFT
 #define TEXT_HEIGHT 15
 #define TEXT_SPACE 4
@@ -54,8 +52,10 @@ unsigned int io_seproxyhal_touch_deny(bagl_element_t *e);
 #define P1_LAST 0x80
 #define P1_MORE 0x00
 
-const cx_ecfp_private_key_t N_privateKey; // private key in flash. const and N_ variable name are mandatory here
-const unsigned char N_initialized; // initialization marker in flash. const and N_ variable name are mandatory here
+const cx_ecfp_private_key_t N_privateKey; // private key in flash. const and N_
+                                          // variable name are mandatory here
+const unsigned char N_initialized; // initialization marker in flash. const and
+                                   // N_ variable name are mandatory here
 
 char lineBuffer[50];
 cx_sha256_t hash;
@@ -107,7 +107,8 @@ static const bagl_element_t const bagl_ui_approval[] = {
 // UI displayed when no signature proposal has been received
 static const bagl_element_t const bagl_ui_idle[] = {
 
-    {{BAGL_RECTANGLE, 0x00, 0, 0, 320, 60, 0, 0, BAGL_FILL, 0x1d2028,
+    {
+        {BAGL_RECTANGLE, 0x00, 0, 0, 320, 60, 0, 0, BAGL_FILL, 0x1d2028,
          0x1d2028, 0, 0},
     },
 
@@ -151,9 +152,10 @@ unsigned int io_seproxyhal_touch_approve(bagl_element_t *e) {
         // Hash is finalized, send back the signature
         unsigned char result[32];
         cx_hash(&hash.header, CX_LAST, G_io_apdu_buffer, 0, result);
-        tx = cx_ecdsa_sign(&N_privateKey, CX_RND_RFC6979 | CX_LAST, CX_SHA256, result, sizeof(result), G_io_apdu_buffer); 
-        hashTainted = 1;                            
-    }               
+        tx = cx_ecdsa_sign(&N_privateKey, CX_RND_RFC6979 | CX_LAST, CX_SHA256,
+                           result, sizeof(result), G_io_apdu_buffer);
+        hashTainted = 1;
+    }
     G_io_apdu_buffer[tx++] = 0x90;
     G_io_apdu_buffer[tx++] = 0x00;
     // Send back the response, do not restart the event loop
@@ -161,12 +163,12 @@ unsigned int io_seproxyhal_touch_approve(bagl_element_t *e) {
     // Display back the original UX
     uiState = UI_IDLE;
     currentUiElement = 0;
-    io_seproxyhal_display(&bagl_ui_erase_all[0]);    
+    io_seproxyhal_display(&bagl_ui_erase_all[0]);
     return 0; // do not redraw the widget
 }
 
 unsigned int io_seproxyhal_touch_deny(bagl_element_t *e) {
-    //signApprove = 0;
+    // signApprove = 0;
     uiDone = 1;
     hashTainted = 1;
     G_io_apdu_buffer[0] = 0x69;
@@ -179,7 +181,6 @@ unsigned int io_seproxyhal_touch_deny(bagl_element_t *e) {
     io_seproxyhal_display(&bagl_ui_erase_all[0]);
     return 0; // do not redraw the widget
 }
-
 
 void reset(void) {
 }
@@ -243,7 +244,8 @@ void sample_main(void) {
 
                 switch (G_io_apdu_buffer[1]) {
                 case INS_SIGN: {
-                    if ((G_io_apdu_buffer[2] != P1_MORE) && (G_io_apdu_buffer[2] != P1_LAST)) {
+                    if ((G_io_apdu_buffer[2] != P1_MORE) &&
+                        (G_io_apdu_buffer[2] != P1_LAST)) {
                         THROW(0x6A86);
                     }
                     if (hashTainted) {
@@ -253,34 +255,37 @@ void sample_main(void) {
                     // Wait for the UI to be completed
                     uiDone = 0;
                     current_text_pos = 0;
-                    text_y = 60;                    
+                    text_y = 60;
                     G_io_apdu_buffer[5 + G_io_apdu_buffer[4]] = '\0';
 
-                    io_seproxyhal_display(&bagl_ui_erase_all[0]);        
+                    io_seproxyhal_display(&bagl_ui_erase_all[0]);
                     uiState = UI_TEXT;
-                    currentUiElement = 0;                    
+                    currentUiElement = 0;
 
-                    // Pump SPI events until the UI has been displayed, then go back to the original event loop
+                    // Pump SPI events until the UI has been displayed, then go
+                    // back to the original event loop
                     while (!uiDone) {
                         unsigned int rx_len;
-                        rx_len = io_seproxyhal_spi_recv(G_io_seproxyhal_spi_buffer, sizeof(G_io_seproxyhal_spi_buffer), 0);
+                        rx_len = io_seproxyhal_spi_recv(
+                            G_io_seproxyhal_spi_buffer,
+                            sizeof(G_io_seproxyhal_spi_buffer), 0);
                         io_event(CHANNEL_SPI);
-                    }                    
+                    }
 
-                    continue; 
-                }                
-                    break;
+                    continue;
+                } break;
 
                 case INS_GET_PUBLIC_KEY: {
-                    cx_ecfp_public_key_t publicKey;                    
+                    cx_ecfp_public_key_t publicKey;
                     cx_ecfp_private_key_t privateKey;
-                    os_memmove(&privateKey, &N_privateKey, sizeof(cx_ecfp_private_key_t));
-                    cx_ecfp_generate_pair(CX_CURVE_256K1, &publicKey, &privateKey, 1);
+                    os_memmove(&privateKey, &N_privateKey,
+                               sizeof(cx_ecfp_private_key_t));
+                    cx_ecfp_generate_pair(CX_CURVE_256K1, &publicKey,
+                                          &privateKey, 1);
                     os_memmove(G_io_apdu_buffer, publicKey.W, 65);
                     tx = 65;
                     THROW(0x9000);
-                }
-                    break;
+                } break;
 
                 case 0xFF: // return to dashboard
                     goto return_to_dashboard;
@@ -327,34 +332,32 @@ unsigned char display_text_part() {
     bagl_element_t element;
     if (text[current_text_pos] == '\0') {
         return 0;
-    }    
+    }
     i = 0;
-    while ((text[current_text_pos] != 0) && 
-           (text[current_text_pos] != '\n') &&
-               (i < MAX_CHARS_PER_LINE)) {
+    while ((text[current_text_pos] != 0) && (text[current_text_pos] != '\n') &&
+           (i < MAX_CHARS_PER_LINE)) {
         lineBuffer[i++] = text[current_text_pos];
-        current_text_pos++; 
+        current_text_pos++;
     }
     if (text[current_text_pos] == '\n') {
         current_text_pos++;
     }
     lineBuffer[i] = '\0';
-    os_memset(&element, 0, sizeof(element));    
+    os_memset(&element, 0, sizeof(element));
     element.component.type = BAGL_LABEL;
-    element.component.x = 4; 
+    element.component.x = 4;
     element.component.y = text_y;
-    element.component.width = 320; 
+    element.component.width = 320;
     element.component.height = TEXT_HEIGHT;
-    //element.component.fill = BAGL_FILL;
+    // element.component.fill = BAGL_FILL;
     element.component.fgcolor = 0x000000;
-    element.component.bgcolor = 0xf9f9f9;  
+    element.component.bgcolor = 0xf9f9f9;
     element.component.font_id = DEFAULT_FONT;
     element.text = lineBuffer;
     text_y += TEXT_HEIGHT + TEXT_SPACE;
     io_seproxyhal_display(&element);
     return 1;
 }
-
 
 unsigned char io_event(unsigned char channel) {
     // nothing done with the event, throw an error on the transport layer if
@@ -369,57 +372,48 @@ unsigned char io_event(unsigned char channel) {
         if (uiState == UI_IDLE) {
             elements = bagl_ui_idle;
             elementsSize = sizeof(bagl_ui_idle) / sizeof(bagl_element_t);
-        }
-        else
-        if (uiState == UI_APPROVAL) {
+        } else if (uiState == UI_APPROVAL) {
             elements = bagl_ui_approval;
             elementsSize = sizeof(bagl_ui_approval) / sizeof(bagl_element_t);
         }
         if (elements != NULL) {
-            io_seproxyhal_touch(elements,
-                            elementsSize,
-                            (G_io_seproxyhal_spi_buffer[4] << 8) |
-                                (G_io_seproxyhal_spi_buffer[5] & 0xFF),
-                            (G_io_seproxyhal_spi_buffer[6] << 8) |
-                                (G_io_seproxyhal_spi_buffer[7] & 0xFF),
-                            G_io_seproxyhal_spi_buffer[3]);
+            io_seproxyhal_touch(elements, elementsSize,
+                                (G_io_seproxyhal_spi_buffer[4] << 8) |
+                                    (G_io_seproxyhal_spi_buffer[5] & 0xFF),
+                                (G_io_seproxyhal_spi_buffer[6] << 8) |
+                                    (G_io_seproxyhal_spi_buffer[7] & 0xFF),
+                                G_io_seproxyhal_spi_buffer[3]);
             if (!element_displayed) {
                 goto general_status;
-            }            
-        }
-        else {
+            }
+        } else {
             goto general_status;
         }
-    }
-        break;
+    } break;
 
     case SEPROXYHAL_TAG_DISPLAY_PROCESSED_EVENT:
         if (uiState == UI_IDLE) {
-            if (currentUiElement < (sizeof(bagl_ui_idle) / sizeof(bagl_element_t))) {
+            if (currentUiElement <
+                (sizeof(bagl_ui_idle) / sizeof(bagl_element_t))) {
                 io_seproxyhal_display(&bagl_ui_idle[currentUiElement++]);
                 break;
             }
-        }
-        else
-        if (uiState == UI_TEXT) {
+        } else if (uiState == UI_TEXT) {
             if (display_text_part()) {
                 break;
-            }
-            else {                
+            } else {
                 uiState = UI_APPROVAL;
                 currentUiElement = 0;
                 io_seproxyhal_display(&bagl_ui_approval[currentUiElement++]);
                 break;
             }
-        }
-        else
-        if (uiState == UI_APPROVAL) {
-            if (currentUiElement < (sizeof(bagl_ui_approval) / sizeof(bagl_element_t))) {
+        } else if (uiState == UI_APPROVAL) {
+            if (currentUiElement <
+                (sizeof(bagl_ui_approval) / sizeof(bagl_element_t))) {
                 io_seproxyhal_display(&bagl_ui_approval[currentUiElement++]);
                 break;
-            }            
-        }
-        else {
+            }
+        } else {
             screen_printf("Unknown UI state\n");
         }
         if (usb_enable_request) {
@@ -461,22 +455,23 @@ __attribute__((section(".boot"))) int main(void) {
     currentUiElement = 0;
 
     // ensure exception will work as planned
-    os_boot();    
+    os_boot();
 
     BEGIN_TRY {
         TRY {
             io_seproxyhal_init();
 
-            // Create the private key if not initialized            
+            // Create the private key if not initialized
             if (N_initialized != 0x01) {
                 unsigned char canary;
                 cx_ecfp_private_key_t privateKey;
                 cx_ecfp_public_key_t publicKey;
-                cx_ecfp_generate_pair(CX_CURVE_256K1, &publicKey, &privateKey, 0);
+                cx_ecfp_generate_pair(CX_CURVE_256K1, &publicKey, &privateKey,
+                                      0);
                 nvm_write(&N_privateKey, &privateKey, sizeof(privateKey));
                 canary = 0x01;
                 nvm_write(&N_initialized, &canary, sizeof(canary));
-            }             
+            }
 
             // send BLE power on (default parameters)
             G_io_seproxyhal_spi_buffer[0] = SEPROXYHAL_TAG_BLE_RADIO_POWER;
