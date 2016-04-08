@@ -122,7 +122,7 @@ log = $(if $(strip $(VERBOSE)),$1,@$1)
 
 default: prepare bin/$(PROG)
 
-load: bin/$(PROG)
+load: 
 	python -m ledgerblue.loadApp --fileName bin/$(PROG).hex --appName $(APPNAME)
 
 delete:

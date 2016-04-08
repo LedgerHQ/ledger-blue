@@ -75,7 +75,7 @@ static const bagl_element_t const bagl_ui_sample[] = {
 unsigned int io_seproxyhal_touch_exit(bagl_element_t *e) {
     // Go back to the dashboard
     os_sched_exit(0);
-    return 1;
+    return 0;
 }
 
 void reset(void) {
