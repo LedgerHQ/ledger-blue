@@ -154,6 +154,7 @@ unsigned int io_seproxyhal_touch_approve(bagl_element_t *e) {
         cx_hash(&hash.header, CX_LAST, G_io_apdu_buffer, 0, result);
         tx = cx_ecdsa_sign(&N_privateKey, CX_RND_RFC6979 | CX_LAST, CX_SHA256,
                            result, sizeof(result), G_io_apdu_buffer);
+	G_io_apdu_buffer[0] &= 0xF0; // discard the parity information 
         hashTainted = 1;
     }
     G_io_apdu_buffer[tx++] = 0x90;
