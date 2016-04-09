@@ -22,13 +22,12 @@ import struct
 import hashlib
 
 class HexLoader:
-	def __init__(self, card, cla=0xF0, secure=False, key=None, mcuTarget=False):
+	def __init__(self, card, cla=0xF0, secure=False, key=None):
 		self.card = card
 		self.cla = cla
 		self.secure = secure
 		self.key = key
 		self.iv = "\x00" * 16;
-		self.mcuTarget = mcuTarget
 
 	def crc16(self, data):
 		TABLE_CRC16_CCITT = [
@@ -106,10 +105,7 @@ class HexLoader:
 		self.exchange(self.cla, 0x00, 0x00, 0x00, data)				
 
 	def crcSegment(self, offsetSegment, lengthSegment, crcExpected):
-		if not self.mcuTarget:
-			data = '\x08' + struct.pack('>H', offsetSegment) + struct.pack('>I', lengthSegment) + struct.pack('>H', crcExpected)
-		else:
-			data = '\x08' + struct.pack('>H', offsetSegment) + struct.pack('>H', lengthSegment) + struct.pack('>H', crcExpected)
+		data = '\x08' + struct.pack('>H', offsetSegment) + struct.pack('>I', lengthSegment) + struct.pack('>H', crcExpected)
 		data = self.encryptAES(data)
 		self.exchange(self.cla, 0x00, 0x00, 0x00, data)						
 
