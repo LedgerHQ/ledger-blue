@@ -2,7 +2,7 @@
 
 ## Short term
 
-  - [ ] Non secure firmware source code
+  - [x] Non secure firmware source code
   - [ ] Original ST Open Source code repository
   - [ ] Architecture documentation
   - [ ] Secure Element commands proxy (SEproxyhal) documentation
