@@ -6,6 +6,10 @@ All necessary information regarding the schematics and PCB of the Ledger Blue De
 
 [![Ledger Blue Schematics](http://i.imgur.com/hoMkkPt.png)](schematics-v06.pdf)
 
+Developers can use JTAG to debug code directly on the Non Secure microcontroller
+
+[![STM32 JTAG header](http://i.imgur.com/72HNm9Q.png)](JTAG.pdf) 
+
 Available files:
 
 * [Schematics](schematics-v06.pdf)
