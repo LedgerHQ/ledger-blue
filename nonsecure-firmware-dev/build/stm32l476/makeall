@@ -1,0 +1,1 @@
+rm -fr obj bin && make -f Makefile.bootloader -j4 && rm -fr obj && make -j4

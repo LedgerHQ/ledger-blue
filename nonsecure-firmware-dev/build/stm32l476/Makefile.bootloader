@@ -1,0 +1,8 @@
+
+PROG := stm32l476_bootloader
+
+DEFINES += HAVE_BL NVM_PAGE_SIZE_B=0x800 CONFIG_TARGET_ID=0x04000001
+
+DEFINES += HAVE_DRAW
+
+include Makefile

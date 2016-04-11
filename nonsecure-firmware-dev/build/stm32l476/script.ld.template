@@ -1,0 +1,193 @@
+/**
+ * Global chip memory layout and constants
+ *
+ */
+
+MEMORY
+{
+#ifdef HAVE_BL
+  FLASH (rx) : ORIGIN = 0x08000000, LENGTH = 256K
+  FLASH_BL (rx) : ORIGIN = 0x08000000,   LENGTH = 256K
+#else 
+  FLASH_BL (rx) : ORIGIN = 0x08000000,   LENGTH = 256K-0x13000
+  FLASH (rx) : ORIGIN = 0x08013000,   LENGTH = 256K-0x13000
+#endif // HAVE_BL
+  SRAM (rwx) : ORIGIN = 0x20000000,   LENGTH = 32K
+}
+
+PAGE_SIZE  = 0x800;
+STACK_SIZE = 2048;
+END_STACK  = ORIGIN(SRAM) + LENGTH(SRAM);
+UNSEC_SIGNATURE_PADDED_MAX_LENGTH = 72;
+
+SECTIONS
+{
+  
+  /****************************************************************/
+  /* This section locates the code in FLASH                       */
+  /****************************************************************/
+  .text_bl :
+  {
+    PROVIDE(_signed = .);
+  } > FLASH_BL = 0xFF
+
+  /** put text in Flash memory, VMA will be equal to LMA */
+  .text :
+  {
+    /* */
+    /* provide start code symbol, shall be zero */
+    _text = .;
+    PROVIDE(_text = .);
+
+    /* At zero, place isr, KEEP is needed as we use --gc-section
+      *
+      * Interrupts vectors is in input section name .isr_vector, set by "__attribute__ ((section(".isr_vector")))"
+      * in startup code
+      */
+    KEEP(*(.isr_vector))
+
+
+#ifdef HAVE_BL
+    /* place reset handler of the bootloader (bootsector) before the magic page, in the first page */
+    *(.text.Reset_Handler)
+
+    . = ALIGN(PAGE_SIZE);
+    
+    /* NVM data (ex-filesystem) */
+    *(.bss.N_*)
+
+    . = ALIGN(PAGE_SIZE);
+#endif // HAVE_BL
+    /* bootloader main is right after the magic page to allow for bootloader upgrade easily */
+    *(.blmain*)
+
+    /* place the other code and rodata defined BUT nvram variables that are displaced in a r/w area */
+    *(.text*)
+    *(EXCLUDE_FILE (*_nvram_*) .rodata*) 
+
+    . = ALIGN(16); 
+    
+    /* all code placed */
+    _etext = .;
+    PROVIDE(_etext = .);
+  } > FLASH = 0x00
+ /* we flush the output section .text in FLASH, wihtout any other
+  * specifications it is placed at addresse 0
+  */
+
+
+  /****************************************************************/
+  /* This section locates the data/bss in RAM                     */
+  /****************************************************************/
+  /* here, as we flush in RAM, VMA will be equals to <...> (see MEMORY)
+    * we need to specify a different LMA address in FLASH to set default value
+    * of .data. The LMA is automatic, with AT> keyword. .data will be loaded
+    * just afer the code, ie after the output section .text
+    * The startup  code will need to copy values from code (accessed via etext VMA) to data
+    * VMA: this done by copying dom _etext to _data until _edata
+    */
+  .data :
+  {
+    
+    /**
+     * Place RAM initialized variables
+     */
+    _data = .;
+    PROVIDE(_data = .);
+
+    *(vtable)
+    *(.data*)
+
+    . = ALIGN(16); 
+    _edata = .;
+
+
+    PROVIDE(_edata = .);
+
+  } > SRAM AT>FLASH = 0x00
+
+  .signature (NOLOAD) :
+  {
+    /* Ensure to place signature at the end, aligned on an AES block */
+    . = ORIGIN(FLASH) + LENGTH(FLASH) - UNSEC_SIGNATURE_PADDED_MAX_LENGTH - 16;
+
+    /* align on AES block size, to avoid trouble during hmac (and save a lot of buffering code) */
+    . = ALIGN(16); 
+    
+    /* all code placed */
+    _eflash = .;
+    PROVIDE(_eflash = .);
+    PROVIDE(_esigned = _eflash);
+    /* symbol for srec_cat signature injection */
+    PROVIDE(_signature = _eflash);
+    /* reserve space for the signature*/
+    PROVIDE(_esignature = _eflash + UNSEC_SIGNATURE_PADDED_MAX_LENGTH);
+  } > FLASH
+
+  .bss :
+  {
+    /**
+     * Place RAM uninitialized variables
+     */
+    _bss = .;
+    *(EXCLUDE_FILE (*_nvram_*) .bss*)
+    _ebss = .;
+
+
+    /**
+     * Reserve stack size
+     */
+    PROVIDE ( end = . );
+    PROVIDE ( _end = . );
+    PROVIDE ( __end__ = . );
+    _stack = .;
+    . = _stack + STACK_SIZE;
+    PROVIDE( _stack_size = STACK_SIZE );
+    PROVIDE( _estack = ABSOLUTE(END_STACK) );
+
+  } > SRAM
+
+  /* remove the debugging information from the standard libraries */
+  DISCARD (NOLOAD) :
+  {
+    libc.a ( * )
+    libm.a ( * )
+    libgcc.a ( * )
+    *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+  }
+
+  /* Stabs debugging sections.  */
+  .stab          0 : { *(.stab) }
+  .stabstr       0 : { *(.stabstr) }
+  .stab.excl     0 : { *(.stab.excl) }
+  .stab.exclstr  0 : { *(.stab.exclstr) }
+  .stab.index    0 : { *(.stab.index) }
+  .stab.indexstr 0 : { *(.stab.indexstr) }
+  .comment       0 : { *(.comment) }
+  /* DWARF debug sections.
+      Symbols in the DWARF debugging sections are relative to the beginning
+      of the section so we begin them at 0.  */
+  /* DWARF 1 */
+  .debug          0 : { *(.debug) }
+  .line           0 : { *(.line) }
+  /* GNU DWARF 1 extensions */
+  .debug_srcinfo  0 : { *(.debug_srcinfo) }
+  .debug_sfnames  0 : { *(.debug_sfnames) }
+  /* DWARF 1.1 and DWARF 2 */
+  .debug_aranges  0 : { *(.debug_aranges) }
+  .debug_pubnames 0 : { *(.debug_pubnames) }
+  /* DWARF 2 */
+  .debug_info     0 : { *(.debug_info .gnu.linkonce.wi.*) }
+  .debug_abbrev   0 : { *(.debug_abbrev) }
+  .debug_line     0 : { *(.debug_line) }
+  .debug_frame    0 : { *(.debug_frame) }
+  .debug_str      0 : { *(.debug_str) }
+  .debug_loc      0 : { *(.debug_loc) }
+  .debug_macinfo  0 : { *(.debug_macinfo) }
+  /* SGI/MIPS DWARF 2 extensions */
+  .debug_weaknames 0 : { *(.debug_weaknames) }
+  .debug_funcnames 0 : { *(.debug_funcnames) }
+  .debug_typenames 0 : { *(.debug_typenames) }
+  .debug_varnames  0 : { *(.debug_varnames) }
+  
+}
