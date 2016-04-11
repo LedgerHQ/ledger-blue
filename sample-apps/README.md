@@ -10,6 +10,6 @@ This directory includes sample applications
 
 Before compiling those applications, verify that the following environment variables are set
 
-  - BOLOS_SDK : must point to secure_sdk_dev has been extracted in this repository
-  - BOLOS_ENV : must point to the location where the toolchain has been built
+  - BOLOS_SDK : must point to [secure_sdk_dev](https://github.com/LedgerHQ/ledger-blue/tree/master/secure-sdk-dev) that  has been cloned from this repository
+  - BOLOS_ENV : must point to the location where the [toolchain](https://github.com/LedgerHQ/ledger-blue/tree/master/env-dev) has been built
  
