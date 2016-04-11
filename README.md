@@ -11,7 +11,7 @@ The Ledger Blue Developer Edition is shipped without any application and without
 
 In the coming days we are going to publish a tutorial on how you can compile and upload your first apps, as well as procedure to update BOLOS firmware to the latest version (which will include the onboarding process).
 
-Developer documentation (SDK, tutorials, examples) will be added in the coming weeks.
+More developer documentation (SDK, tutorials, examples) will be added in [the coming weeks](https://github.com/LedgerHQ/ledger-blue/blob/master/TODO.md).
 
 # Content of this repository
 
@@ -20,6 +20,10 @@ Developer documentation (SDK, tutorials, examples) will be added in the coming w
 * [Python tools for the Ledger Blue](https://github.com/LedgerHQ/ledger-blue/tree/master/loader-python)
 * [Ledger Blue Secure SDK](https://github.com/LedgerHQ/ledger-blue/tree/master/secure-sdk-dev)
 * [Sample applications for Ledger Blue](https://github.com/LedgerHQ/ledger-blue/tree/master/sample-apps)
+
+## Firmware
+* [Non Secure Firmware for Ledger Blue](https://github.com/LedgerHQ/ledger-blue/tree/master/nonsecure-firmware-dev)
+* [Official Non Secure firmware images for Ledger Blue](https://github.com/LedgerHQ/ledger-blue/tree/master/nonsecure-firmware-release-dev)
 
 ## Hardware
 * [Schematics & Assembly Ledger Blue Developer Edition](https://github.com/LedgerHQ/ledger-blue/tree/master/schematics-dev)
