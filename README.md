@@ -16,15 +16,15 @@ More developer documentation (SDK, tutorials, examples) will be added in [the co
 # Content of this repository
 
 ## Software
-* [Ledger Blue development environment](https://github.com/LedgerHQ/ledger-blue/tree/master/env-dev)
-* [Python tools for the Ledger Blue](https://github.com/LedgerHQ/ledger-blue/tree/master/loader-python)
-* [Ledger Blue Secure SDK](https://github.com/LedgerHQ/ledger-blue/tree/master/secure-sdk-dev)
-* [Sample applications for Ledger Blue](https://github.com/LedgerHQ/ledger-blue/tree/master/sample-apps)
+* [Ledger Blue development environment](https://github.com/LedgerHQ/blue-devenv/tree/master)
+* [Python tools for the Ledger Blue](https://github.com/LedgerHQ/blue-loader-python/tree/master)
+* [Ledger Blue Secure SDK](https://github.com/LedgerHQ/blue-secure-sdk/tree/master)
+* [Sample applications for Ledger Blue](https://github.com/LedgerHQ/blue-sample-apps/tree/master)
 
 ## Firmware
-* [Non Secure Firmware for Ledger Blue](https://github.com/LedgerHQ/ledger-blue/tree/master/nonsecure-firmware-dev)
-* [Official Non Secure firmware images for Ledger Blue](https://github.com/LedgerHQ/ledger-blue/tree/master/nonsecure-firmware-release-dev)
+* [Non Secure Firmware for Ledger Blue](https://github.com/LedgerHQ/blue-nonsecure-firmware/tree/master)
+* [Official Non Secure firmware images for Ledger Blue](https://github.com/LedgerHQ/blue-nonsecure-firmware-releases/tree/master)
 
 ## Hardware
-* [Schematics & Assembly Ledger Blue Developer Edition](https://github.com/LedgerHQ/ledger-blue/tree/master/schematics-dev)
-* [Casing Ledger Blue Developer Edition](https://github.com/LedgerHQ/ledger-blue/tree/master/casing-dev)
+* [Schematics & Assembly Ledger Blue Developer Edition](https://github.com/LedgerHQ/blue-schematics/tree/master)
+* [Casing Ledger Blue Developer Edition](https://github.com/LedgerHQ/blue-casing/tree/master)
