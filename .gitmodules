@@ -1,0 +1,24 @@
+[submodule "casing-dev"]
+	path = casing-dev
+	url = https://github.com/LedgerHQ/blue-casing.git
+[submodule "env-dev"]
+	path = env-dev
+	url = https://github.com/LedgerHQ/blue-devenv.git
+[submodule "loader-python"]
+	path = loader-python
+	url = https://github.com/LedgerHQ/blue-loader-python.git
+[submodule "nonsecure-firmware-dev"]
+	path = nonsecure-firmware-dev
+	url = https://github.com/LedgerHQ/blue-nonsecure-firmware.git
+[submodule "nonsecure-firmware-release-dev"]
+	path = nonsecure-firmware-release-dev
+	url = https://github.com/LedgerHQ/blue-nonsecure-firmware-releases.git
+[submodule "sample-apps"]
+	path = sample-apps
+	url = https://github.com/LedgerHQ/blue-sample-apps.git
+[submodule "schematics-dev"]
+	path = schematics-dev
+	url = https://github.com/LedgerHQ/blue-schematics.git
+[submodule "secure-sdk-dev"]
+	path = secure-sdk-dev
+	url = https://github.com/LedgerHQ/blue-secure-sdk.git
