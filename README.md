@@ -31,6 +31,6 @@ More developer documentation (SDK, tutorials, examples) will be added in [the co
 
 ## Cloning this repository - IMPORTANT
 
-* This repository contains linked submodules. To clone, us the following:
+* This repository contains linked submodules. To clone, use the following:
 
 `git clone --recursive https://github.com/LedgerHQ/ledger-blue`
