@@ -28,3 +28,9 @@ More developer documentation (SDK, tutorials, examples) will be added in [the co
 ## Hardware
 * [Schematics & Assembly Ledger Blue Developer Edition](https://github.com/LedgerHQ/blue-schematics/tree/master)
 * [Casing Ledger Blue Developer Edition](https://github.com/LedgerHQ/blue-casing/tree/master)
+
+## Cloning this repository - IMPORTANT
+
+* This repository contains linked submodules. To clone, use the following:
+
+`git clone --recursive https://github.com/LedgerHQ/ledger-blue`
