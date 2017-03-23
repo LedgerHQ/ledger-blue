@@ -3,7 +3,7 @@
 The Ledger Blue is a personal lightweight mobile device architectured around a ST31 secure element, featuring a touch screen and USB/NFC/BLE connectivity.
 It is based on [BOLOS](https://medium.com/@Ledger/introducing-bolos-blockchain-open-ledger-operating-system-b9893d09f333) (Blockchain Open Ledger Operating System), where apps can run securely in full isolation and leverage the main secrets (BIP39 seed) through allocated derivations.
 
-The Blue is available now as an [developer edition](https://www.ledgerwallet.com/products/9-ledger-blue), for enthousiasts and early adopters.
+The Blue is available now as an [developer edition](https://www.ledgerwallet.com/products/9-ledger-blue), for enthusiasts and early adopters.
 
 # Starting guide
 
